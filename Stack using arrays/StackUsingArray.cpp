@@ -1,14 +1,16 @@
 #include <bits/stdc++.h>
 
+template <typename T>
+
 class Stack {
 
-    int* data;
+    T* data;
     int index;
     int totalsize;
 
     public:
     Stack() {
-        data = new int[5];
+        data = new T[5];
         totalsize = 5;
         index = 0;
     }
@@ -21,26 +23,26 @@ class Stack {
         return index == 0;
     }
 
-    int top() {
+    T top() {
         if (isEmpty()) {
             cout << "Stack is empty!\n";
-            return INT_MIN;
+            return 0;
         }
         return data[index - 1];
     }
 
-    int pop() {
+    T pop() {
         if (isEmpty()) {
             cout << "Stack is empty!\n";
-            return INT_MIN;
+            return 0;
         }
         index --;
         return data[index];
     }
 
-    void push(int value) {
+    void push(T value) {
         if (index == totalsize) {
-            int *newData = new int[totalsize * 2];
+            T *newData = new T[totalsize * 2];
             for (int i = 0 ; i < totalsize ; i ++) {
                 newData[i] = data[i];
             }

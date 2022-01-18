@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 
-	Stack s;
+	Stack<int> s;
 	
 	int value = 0;
 	cout << "inserting elements\n";
