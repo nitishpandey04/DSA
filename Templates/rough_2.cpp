@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "templates.cpp"
+#include "Templates.cpp"
 
 int main() {
 
