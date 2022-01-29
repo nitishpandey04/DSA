@@ -113,7 +113,7 @@ BinaryTreeNode<int>* buildTreePreAndInHelper(int* preorder, int* inorder, int pr
             break;
         }
     }
-    int lps = preS + 1; lis = inS; lie = rootIndex - 1; lpe = lie - lis + lps;
+    int lps = preS + 1, lis = inS, lie = rootIndex - 1, lpe = lie - lis + lps;
     BinaryTreeNode<int>* left = buildTreePreAndInHelper(preorder, inorder, lps, lpe, lis, lie);
     BinaryTreeNode<int>* right = buildTreePreAndInHelper(preorder, inorder, lpe + 1, preE, rootIndex + 1, inE);
     root -> left = left;
@@ -121,7 +121,7 @@ BinaryTreeNode<int>* buildTreePreAndInHelper(int* preorder, int* inorder, int pr
     return root;
 }
 
-BinaryTreeNodePreIn<int>* buildTreePreAndIn(int *preorder, int *inorder, int size) {
+BinaryTreeNode<int>* buildTreePreAndIn(int *preorder, int *inorder, int size) {
     // build tree using pre & inorder traversal of binary tree assuming there are no duplicates
     return buildTreePreAndInHelper(preorder, inorder, 0, size - 1, 0, size - 1);
 }
@@ -149,6 +149,20 @@ BinaryTreeNode<int>* buildTreePostAndIn(int *postorder, int *inorder, int size) 
     return buildTreePostAndInHelper(postorder, inorder, 0, size - 1, 0, size - 1);
 }
 
+pair<int, int> heightDiameter(BinaryTreeNode<int>* root) {
+    if (root == NULL) {
+        pair<int, int> p(0, 0);
+        return p;
+    }
+    pair<int, int> leftAns = heightDiameter(root -> left);
+    pair<int, int> rightAns = heightDiameter(root -> right);
+    int lh = leftAns.first, ld = leftAns.second, rh = rightAns.first, rd = rightAns.second;
+    int height = 1 + max(lh, rh);
+    int diameter = max(lh + rh, max(ld, rd));
+    pair<int, int> ans(height, diameter);
+    return ans;
+}
+
 int main() {
 
     // 1 2 3 4 5 6 7 -1 -1 -1 -1 8 9 -1 -1 -1 -1 -1 -1
@@ -160,6 +174,7 @@ int main() {
     cout << "Inorder Traversal: "; inOrder(root); cout << "\n";
     cout << "Preorder Traversal: "; preOrder(root); cout << "\n";
     cout << "Postorder Traversal: "; postOrder(root); cout << "\n";
+    cout << "The diameter of tree is " << heightDiameter(root).second << "\n";
     delete root;
 
     return 0;
