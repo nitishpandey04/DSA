@@ -6,12 +6,6 @@ class BST {
 
     BinaryTreeNode<int>* root;
 
-    int minimum(BinaryTreeNode<int>* root) {
-        if (root == NULL) return INT_MAX;
-        if (root -> left == NULL && root -> right == NULL) return root -> data;
-        return minimum(root -> left);
-    }
-
     bool hasData(int d, BinaryTreeNode<int>* root) {
         if (root == NULL) return false;
         if (root -> data == d) return true;
@@ -53,26 +47,35 @@ class BST {
     BinaryTreeNode<int>* remove(int d, BinaryTreeNode<int>* root) {
         if (root == NULL) return NULL;
         if (root -> data > d) {
-            BinaryTreeNode<int>* leftAns = remove(d, root -> left);
-            root -> left = leftAns;
+            root -> left = remove(d, root -> left);
             return root;
-        }
-        if (root -> data < d) {
-            BinaryTreeNode<int>* rightAns = remove(d, root -> right);
-            root -> right = rightAns;
+        } else if (root -> data < d) {
+            root -> right = remove(d, root -> right);
             return root;
+        } else {
+            if (root -> left == NULL && root -> right == NULL) {
+                delete root;
+                return NULL;
+            } else if (root -> left == NULL) {
+                BinaryTreeNode<int>* temp = root -> right;
+                root -> right = NULL;
+                delete root;
+                return temp;
+            } else if (root -> right == NULL) {
+                BinaryTreeNode<int>* temp = root -> left;
+                root -> left = NULL;
+                delete root;
+                return temp;
+            } else {
+                BinaryTreeNode<int>* rightMin = root -> right;
+                while (rightMin -> left != NULL) {
+                    rightMin = rightMin -> left;
+                }
+                root -> data = rightMin -> data;
+                root -> right = remove(rightMin -> data, root -> right);
+                return root;
+            }
         }
-        if (root -> left == NULL && root -> right == NULL) {
-            delete root;
-            return NULL;
-        }
-        if (root -> left != NULL && root -> right == NULL) return root -> left;
-        if (root -> left == NULL && root -> right != NULL) return root -> right;
-        int min = minimum(root -> right);
-        root -> data = min;
-        BinaryTreeNode<int>* rightAns = remove(min, root -> right);
-        root -> right = rightAns;
-        return root;
     }
     
     public:
